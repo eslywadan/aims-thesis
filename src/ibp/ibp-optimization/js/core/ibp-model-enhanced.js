@@ -1,3 +1,8 @@
+// =================================================================
+// FILE 6: js/core/ibp-model-enhanced.js
+// CREATE THIS SIXTH (Enhanced IBP Model)
+// =================================================================
+
 class IBPOptimizationModelEnhanced extends IBPOptimizationModel {
     constructor(config = {}) {
         super(config);
@@ -7,9 +12,13 @@ class IBPOptimizationModelEnhanced extends IBPOptimizationModel {
         this.workerManager = new WorkerManager();
         this.performanceMonitor = new PerformanceMonitor();
         this.isWorkerSupported = typeof Worker !== 'undefined';
+        this.enhancedFeatures = {
+            asyncScenarios: true,
+            caching: true,
+            progressTracking: true
+        };
         
-        // Initialize enhanced features
-        this.initialize();
+        this.log('🚀 Enhanced IBP Model created', 'info');
     }
 
     async initialize() {
@@ -17,79 +26,90 @@ class IBPOptimizationModelEnhanced extends IBPOptimizationModel {
             if (this.isWorkerSupported) {
                 const initialized = await this.workerManager.initialize();
                 if (initialized) {
-                    this.log('🚀 Enhanced model with Web Workers initialized', 'success');
+                    this.log('✅ Enhanced model with Web Workers ready', 'success');
+                    return true;
                 } else {
-                    this.log('⚠️ Fallback to synchronous processing', 'warning');
+                    this.log('⚠️ Web Workers failed, using fallback mode', 'warning');
                 }
             } else {
-                this.log('⚠️ Web Workers not supported, using synchronous processing', 'warning');
+                this.log('⚠️ Web Workers not supported, using synchronous mode', 'warning');
             }
+            return false;
         } catch (error) {
             this.log('❌ Error initializing enhanced model: ' + error.message, 'error');
+            return false;
         }
     }
 
-    // Enhanced demand scenario generation with Web Workers
+    // Enhanced demand scenario generation with Web Workers and progress
     async generateDemandScenariosAsync(onProgress = null) {
-        const cacheKey = this.cache.createKey(
-            'scenarios',
-            this.config.numScenarios,
-            this.config.horizonMonths,
-            Array.from(this.demand.forecast),
-            Array.from(this.demand.uncertainty)
-        );
-
+        const cacheKey = this.createScenarioCacheKey();
+        
         // Check cache first
         const cached = this.cache.get(cacheKey);
         if (cached) {
             this.log('📦 Using cached demand scenarios', 'info');
+            if (onProgress) {
+                onProgress({ progress: 1.0, completed: cached.numScenarios, total: cached.numScenarios });
+            }
             return cached;
         }
 
-        this.log('⚡ Generating demand scenarios with Web Worker...', 'info');
-        
-        const startTime = performance.now();
+        this.performanceMonitor.startTimer('generateDemandScenarios');
+        this.log('⚡ Generating demand scenarios...', 'info');
         
         try {
             let scenarios;
             
             if (this.isWorkerSupported && this.workerManager.workers.has('monte-carlo')) {
-                // Use Web Worker for large scenario generation
+                // Use Web Worker for async generation
                 scenarios = await this.workerManager.runMonteCarloSimulation({
                     numScenarios: this.config.numScenarios,
                     horizonMonths: this.config.horizonMonths,
                     forecast: Array.from(this.demand.forecast),
                     uncertainty: Array.from(this.demand.uncertainty)
-                }, onProgress);
+                }, (progress) => {
+                    if (onProgress) onProgress(progress);
+                    this.log(`📊 Scenario generation: ${(progress.progress * 100).toFixed(1)}%`, 'info');
+                });
                 
                 // Update internal scenarios array
                 for (let i = 0; i < scenarios.scenarios.length; i++) {
                     this.demand.scenarios[i] = scenarios.scenarios[i];
                 }
             } else {
-                // Fallback to synchronous generation
+                // Fallback to synchronous generation with simulated progress
+                if (onProgress) {
+                    onProgress({ progress: 0.0, completed: 0, total: this.config.numScenarios });
+                }
+                
                 this.generateDemandScenarios();
+                
                 scenarios = {
                     scenarios: Array.from(this.demand.scenarios),
                     numScenarios: this.config.numScenarios,
-                    horizonMonths: this.config.horizonMonths
+                    horizonMonths: this.config.horizonMonths,
+                    metadata: {
+                        generatedAt: Date.now(),
+                        method: 'synchronous'
+                    }
                 };
+                
+                if (onProgress) {
+                    onProgress({ progress: 1.0, completed: this.config.numScenarios, total: this.config.numScenarios });
+                }
             }
 
-            const endTime = performance.now();
-            const duration = endTime - startTime;
-            
+            const duration = this.performanceMonitor.endTimer('generateDemandScenarios');
             this.log(`✅ Scenarios generated in ${duration.toFixed(2)}ms`, 'success');
             
             // Cache the result
             this.cache.set(cacheKey, scenarios);
             
-            // Record performance
-            this.performanceMonitor.record('generateDemandScenarios', duration);
-            
             return scenarios;
             
         } catch (error) {
+            this.performanceMonitor.endTimer('generateDemandScenarios');
             this.log('❌ Error generating scenarios: ' + error.message, 'error');
             
             // Fallback to synchronous method
@@ -97,151 +117,145 @@ class IBPOptimizationModelEnhanced extends IBPOptimizationModel {
             return {
                 scenarios: Array.from(this.demand.scenarios),
                 numScenarios: this.config.numScenarios,
-                horizonMonths: this.config.horizonMonths
+                horizonMonths: this.config.horizonMonths,
+                metadata: { method: 'fallback' }
             };
         }
     }
 
-    // Memoized objective evaluation
+    // Enhanced objective evaluation with progress tracking
     async evaluateObjectivesEnhanced(solution = null, onProgress = null) {
-        const startTime = performance.now();
+        this.performanceMonitor.startTimer('evaluateObjectives');
         
         if (solution) {
             this.updateDecisions(solution);
         }
 
-        const solutionKey = this.cache.createKey(
-            'objectives',
-            solution ? this.hashSolution(solution) : 'current',
-            Array.from(this.decisions.production),
-            Array.from(this.decisions.procurement)
-        );
-
-        // Check cache
-        const cached = this.cache.get(solutionKey);
+        const cacheKey = this.createObjectiveCacheKey(solution);
+        const cached = this.cache.get(cacheKey);
         if (cached) {
             this.log('📦 Using cached objective evaluation', 'info');
+            if (onProgress) {
+                onProgress({ percentage: 100, message: 'Retrieved from cache' });
+            }
             return cached;
         }
 
-        // Create progress tracker if callback provided
-        let progressTracker = null;
-        if (onProgress) {
-            progressTracker = window.progressManager?.createTracker('evaluation', {
-                total: 4 // 4 objectives
-            });
-            progressTracker.onProgress = onProgress;
-        }
-
         try {
-            // Evaluate objectives with progress tracking
+            // Create progress tracker
+            const progressSteps = 4; // 4 objectives
+            let completed = 0;
+            
+            const updateProgress = (message) => {
+                completed++;
+                const percentage = (completed / progressSteps) * 100;
+                if (onProgress) {
+                    onProgress({ percentage, message, current: completed, total: progressSteps });
+                }
+            };
+
+            // Evaluate objectives with progress updates
+            this.log('📊 Evaluating objectives...', 'info');
+            
+            const costScenarios = this.evaluateCostObjective();
+            updateProgress('Cost evaluation completed');
+            await this.delay(10); // Prevent blocking
+            
+            const serviceLevelScenarios = this.evaluateServiceLevelObjective();
+            updateProgress('Service level evaluation completed');
+            await this.delay(10);
+            
+            const inventoryTurnsScenarios = this.evaluateInventoryTurnsObjective();
+            updateProgress('Inventory turns evaluation completed');
+            await this.delay(10);
+            
+            const sustainabilityScenarios = this.evaluateSustainabilityObjective();
+            updateProgress('Sustainability evaluation completed');
+
             const objectives = {
-                cost: await this.evaluateCostObjectiveAsync(progressTracker),
-                serviceLevel: await this.evaluateServiceLevelObjectiveAsync(progressTracker),
-                inventoryTurns: await this.evaluateInventoryTurnsObjectiveAsync(progressTracker),
-                sustainability: await this.evaluateSustainabilityObjectiveAsync(progressTracker)
+                cost: costScenarios,
+                serviceLevel: serviceLevelScenarios,
+                inventoryTurns: inventoryTurnsScenarios,
+                sustainability: sustainabilityScenarios
             };
 
             // Calculate robust metrics
             const robustObjectives = this.calculateRobustMetrics(objectives);
             
-            const endTime = performance.now();
-            const duration = endTime - startTime;
-            
-            // Cache result
-            this.cache.set(solutionKey, robustObjectives);
-            
-            // Record performance
-            this.performanceMonitor.record('evaluateObjectives', duration);
-            
+            const duration = this.performanceMonitor.endTimer('evaluateObjectives');
             this.log(`📊 Objectives evaluated in ${duration.toFixed(2)}ms`, 'success');
             
-            if (progressTracker) {
-                progressTracker.complete();
-                window.progressManager?.removeTracker('evaluation');
-            }
+            // Cache result
+            this.cache.set(cacheKey, robustObjectives);
             
             return robustObjectives;
             
         } catch (error) {
+            this.performanceMonitor.endTimer('evaluateObjectives');
             this.log('❌ Error evaluating objectives: ' + error.message, 'error');
-            
-            if (progressTracker) {
-                window.progressManager?.removeTracker('evaluation');
-            }
             
             // Fallback to synchronous evaluation
             return this.evaluateObjectives(solution);
         }
     }
 
-    // Async objective evaluation methods (with small delays to prevent blocking)
-    async evaluateCostObjectiveAsync(progressTracker = null) {
-        const result = this.evaluateCostObjective();
-        if (progressTracker) progressTracker.increment();
-        await this.delay(1); // Prevent blocking
-        return result;
+    // Utility methods for enhanced model
+    createScenarioCacheKey() {
+        return this.cache.createKey(
+            'scenarios',
+            this.config.numScenarios,
+            this.config.horizonMonths,
+            Array.from(this.demand.forecast).join(','),
+            Array.from(this.demand.uncertainty).join(',')
+        );
     }
 
-    async evaluateServiceLevelObjectiveAsync(progressTracker = null) {
-        const result = this.evaluateServiceLevelObjective();
-        if (progressTracker) progressTracker.increment();
-        await this.delay(1);
-        return result;
-    }
-
-    async evaluateInventoryTurnsObjectiveAsync(progressTracker = null) {
-        const result = this.evaluateInventoryTurnsObjective();
-        if (progressTracker) progressTracker.increment();
-        await this.delay(1);
-        return result;
-    }
-
-    async evaluateSustainabilityObjectiveAsync(progressTracker = null) {
-        const result = this.evaluateSustainabilityObjective();
-        if (progressTracker) progressTracker.increment();
-        await this.delay(1);
-        return result;
-    }
-
-    // Utility methods
-    hashSolution(solution) {
-        // Create a hash of the solution for caching
-        const combined = [
-            ...Array.from(solution.production || []),
-            ...Array.from(solution.procurement || []),
-            ...Array.from(solution.distribution || [])
-        ];
+    createObjectiveCacheKey(solution) {
+        const solutionData = solution ? [
+            Array.from(solution.production || []).join(','),
+            Array.from(solution.procurement || []).join(','),
+            Array.from(solution.distribution || []).join(',')
+        ].join('|') : 'current';
         
-        return combined.reduce((hash, value) => {
-            return ((hash << 5) - hash) + (value * 1000 | 0);
-        }, 0).toString();
+        return this.cache.createKey(
+            'objectives',
+            solutionData,
+            Array.from(this.decisions.production).join(','),
+            Array.from(this.decisions.procurement).join(',')
+        );
     }
 
     async delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    // Get performance statistics
+    // Get comprehensive performance statistics
     getPerformanceStats() {
         return {
             cache: this.cache.getStats(),
             performance: this.performanceMonitor.getStats(),
-            workerSupport: this.isWorkerSupported
+            worker: this.workerManager.getStats(),
+            features: this.enhancedFeatures,
+            model: {
+                horizonMonths: this.config.horizonMonths,
+                numScenarios: this.config.numScenarios,
+                objectives: this.config.objectives
+            }
         };
     }
 
-    // Cleanup method
+    // Cleanup resources
     cleanup() {
         if (this.workerManager) {
             this.workerManager.terminate();
         }
         this.cache.clear();
         this.performanceMonitor.reset();
+        this.log('🧹 Enhanced model cleanup completed', 'info');
     }
 }
 
-// Factory enhancement
+// Enhanced Factory
 class IBPModelFactoryEnhanced {
     static createManufacturingModelEnhanced(config = {}) {
         const manufacturingConfig = {
@@ -254,6 +268,19 @@ class IBPModelFactoryEnhanced {
         };
         
         return new IBPOptimizationModelEnhanced(manufacturingConfig);
+    }
+    
+    static createRetailModelEnhanced(config = {}) {
+        const retailConfig = {
+            horizonMonths: 12,
+            numScenarios: 750,
+            objectives: ['cost', 'serviceLevel', 'inventoryTurns'],
+            uncertaintyTypes: ['demand', 'leadTime', 'cost'],
+            industryType: 'retail',
+            ...config
+        };
+        
+        return new IBPOptimizationModelEnhanced(retailConfig);
     }
 }
 
