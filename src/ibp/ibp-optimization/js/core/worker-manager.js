@@ -1,3 +1,6 @@
+// js/core/worker-manager.js
+// FIXED VERSION - Added missing getStats() method
+
 class WorkerManager {
     constructor() {
         this.workers = new Map();
@@ -5,6 +8,12 @@ class WorkerManager {
         this.activeTasks = new Map();
         this.maxWorkers = navigator.hardwareConcurrency || 4;
         this.taskIdCounter = 0;
+        this.stats = {
+            tasksCompleted: 0,
+            tasksFailed: 0,
+            totalExecutionTime: 0,
+            workersInitialized: false
+        };
     }
 
     // Initialize workers
@@ -12,10 +21,12 @@ class WorkerManager {
         try {
             // Create Monte Carlo worker
             await this.createWorker('monte-carlo', 'js/workers/monte-carlo-worker.js');
+            this.stats.workersInitialized = true;
             console.log('✅ Worker Manager initialized successfully');
             return true;
         } catch (error) {
             console.error('❌ Failed to initialize Worker Manager:', error);
+            this.stats.workersInitialized = false;
             return false;
         }
     }
@@ -30,6 +41,7 @@ class WorkerManager {
             
             worker.addEventListener('error', (error) => {
                 console.error(`Worker ${workerType} error:`, error);
+                this.stats.tasksFailed++;
             });
             
             this.workers.set(workerType, worker);
@@ -54,11 +66,16 @@ class WorkerManager {
         // Handle task completion
         const task = this.activeTasks.get(taskId);
         if (task) {
+            const executionTime = Date.now() - task.startTime;
+            this.stats.totalExecutionTime += executionTime;
+            
             this.activeTasks.delete(taskId);
             
             if (success) {
+                this.stats.tasksCompleted++;
                 task.resolve(result);
             } else {
+                this.stats.tasksFailed++;
                 task.reject(new Error(error));
             }
         }
@@ -92,6 +109,7 @@ class WorkerManager {
             setTimeout(() => {
                 if (this.activeTasks.has(taskId)) {
                     this.activeTasks.delete(taskId);
+                    this.stats.tasksFailed++;
                     reject(new Error('Task timeout after 60 seconds'));
                 }
             }, 60000);
@@ -102,11 +120,31 @@ class WorkerManager {
         return `task_${++this.taskIdCounter}_${Date.now()}`;
     }
 
+    // NEW METHOD: Get statistics about worker performance
+    getStats() {
+        const avgExecutionTime = this.stats.tasksCompleted > 0 
+            ? this.stats.totalExecutionTime / this.stats.tasksCompleted 
+            : 0;
+        
+        return {
+            supported: typeof Worker !== 'undefined',
+            initialized: this.stats.workersInitialized,
+            workersActive: this.workers.size,
+            maxWorkers: this.maxWorkers,
+            tasksCompleted: this.stats.tasksCompleted,
+            tasksFailed: this.stats.tasksFailed,
+            tasksActive: this.activeTasks.size,
+            avgExecutionTime: Math.round(avgExecutionTime * 100) / 100,
+            totalExecutionTime: this.stats.totalExecutionTime
+        };
+    }
+
     // Cleanup method
     terminate() {
         this.workers.forEach(worker => worker.terminate());
         this.workers.clear();
         this.activeTasks.clear();
+        this.stats.workersInitialized = false;
     }
 }
 
