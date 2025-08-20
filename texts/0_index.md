@@ -16,6 +16,12 @@
 . [Solvinglargescaleindustrialproductionschedulingproblemswithcomplexconstraints](../texts/Solvinglargescaleindustrialproductionschedulingproblemswithcomplexconstraints.pdf)
 . [Notes](../notes/Solvinglargescaleindustrialproductionschedulingproblemswithcomplexconstraints.md)
 
+
+- Surrogate-assisted evolutionary computation: Recent advances and future challenges
+. [SECPublished](../texts/SECPublished.pdf)
+. [Notes](../notes/Surrogate-assisted_evolutionary_computation_Recent_advances_and_future_challenges.md)
+
+
 - Uncertainty Analysis and Optimization Modeling with Application to Supply Chain Management: A Systematic Review
 . [mathematics-11-02530](../text/mathematics-11-02530.pdf) 
 . [Notes](../notes/Uncertainty_Analysis_and_Opt_Modeling_with_App_to SCM_A_Systematic_Review.md)

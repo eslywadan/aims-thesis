@@ -1,4 +1,4 @@
 # Work Schedule
 
-## 2025-W34 
+## 2025w34 
 Problem Definition & Research Goal

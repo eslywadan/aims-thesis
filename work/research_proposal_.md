@@ -1,4 +1,4 @@
-# Research Proposal: AI ensembled Multi-Objective Optimization Under Uncertainty for Integrated Business Planning on TFT-LCD Industry
+# Research Proposal: Multi-Objective Optimization Under Uncertainty for Integrated Business Planning on TFT-LCD Industry
 
 ## 1. Research Problem Statement
 
@@ -212,16 +212,8 @@ Validate the proposed multi-objective optimization and uncertainty quantificatio
 - Product lifecycle stage impact on objective prioritization
 - Validation metrics specific to fast-moving technology industries
 
-### **CRQ4: Implementation Success Factors**
-**Question:** What organizational, technological, and cultural factors most significantly influence the successful implementation and adoption of advanced multi-objective IBP systems in TFT-LCD manufacturing environments?
 
-**Research Focus Areas:**
-- Change management strategies for complex optimization system adoption
-- Integration challenges with existing enterprise systems
-- Training and capability building requirements
-- Organizational structure impact on implementation success
-
-### **CRQ5: Scalability and Generalizability**
+### **CRQ4: Scalability and Generalizability**
 **Question:** How can the developed frameworks scale from pilot implementations to enterprise-wide deployment while maintaining optimization quality and uncertainty handling capabilities?
 
 **Research Focus Areas:**
@@ -239,31 +231,10 @@ Validate the proposed multi-objective optimization and uncertainty quantificatio
 - Long-term performance tracking and trend analysis
 - Statistical significance testing for business impact assessment
 
----
 
-## **Integrated Success Metrics**
 
-### **Quantitative Performance Indicators:**
-- **Multi-objective efficiency:** Pareto frontier quality and convergence speed
-- **Uncertainty handling:** Forecast accuracy improvement and risk reduction
-- **Implementation success:** Cost reduction, service level improvement, inventory optimization
-- **Computational performance:** Solution time, scalability measures, system responsiveness
 
-### **Qualitative Assessment Criteria:**
-- **Framework usability:** Stakeholder acceptance and adoption rates
-- **Business value creation:** Strategic decision quality improvement
-- **Organizational capability:** Knowledge transfer and skill development
-- **Industry impact:** Best practice establishment and standard setting
-
-### **Validation Timeline and Milestones:**
-- **Phase 1 (Months 1-12):** Framework development and initial testing
-- **Phase 2 (Months 13-24):** Pilot implementation and validation
-- **Phase 3 (Months 25-36):** Full-scale deployment and performance measurement
-- **Phase 4 (Months 37-48):** Industry benchmarking and best practice documentation
-
-This focused research agenda provides a comprehensive yet manageable scope that addresses the core challenges in IBP optimization while ensuring practical validation and industry impact in the TFT-LCD manufacturing sector.               
-
-### 1.3 Research Contributions
+### 1.3 Expected Research Contributions
 - **Algorithmic Innovation:** Novel multi-objective optimization algorithms tailored for IBP uncertainty characteristics
 - **Uncertainty Modeling:** Comprehensive framework for incorporating various uncertainty types in IBP
 - **Adaptive Mechanisms:** Dynamic objective weighting based on business context and market conditions
@@ -870,5 +841,164 @@ To support the technical approaches (e.g., BMOO, EMOO), here’s a Python script
  
 ```
 
+
+
+--- Appendix ---
+
+# Integrated Business Planning (IBP)
+
+## **Core Definition**
+
+**Integrated Business Planning (IBP)** is a comprehensive, cross-functional business process that systematically aligns and synchronizes strategic objectives, operational plans, and financial targets across an organization's entire value chain to optimize enterprise-wide performance under uncertainty (Grimson & Pyke, 2007; Oliver Wight, 2019).
+
+## **Conceptual Framework**
+
+IBP represents an evolution from traditional Sales and Operations Planning (S&OP) by expanding the planning horizon, scope, and integration depth to encompass:
+
+### **1. Multi-Dimensional Integration**
+- **Horizontal Integration:** Coordination across functional silos (sales, operations, finance, procurement, marketing)
+- **Vertical Integration:** Alignment from strategic planning to operational execution
+- **Temporal Integration:** Synchronization of short-term operations with long-term strategic goals
+- **Supply Chain Integration:** End-to-end coordination from suppliers to customers (Tuomikangas & Kaipia, 2014)
+
+### **2. Planning Scope and Horizon**
+IBP extends beyond traditional 18-month operational planning to encompass:
+- **Strategic Planning:** 3-5 year strategic horizon alignment
+- **Financial Planning:** Budget and resource allocation integration
+- **Portfolio Management:** Product lifecycle and innovation pipeline coordination
+- **Risk Management:** Uncertainty and scenario planning incorporation (Cecere et al., 2009)
+
+## **Defining Characteristics**
+
+### **Process Characteristics:**
+1. **Cross-Functional Governance:** Structured decision-making involving all business functions
+2. **Scenario-Based Planning:** Multiple future state modeling and contingency planning
+3. **Performance Management:** Integrated KPI frameworks linking operational and financial metrics
+4. **Continuous Reconciliation:** Regular alignment of plans with actual performance and market changes
+
+### **Technology Enablement:**
+- **Advanced Analytics:** Predictive modeling, optimization algorithms, and machine learning integration
+- **Real-Time Data Integration:** IoT, ERP, and external market data synchronization
+- **Visualization and Collaboration:** Digital platforms supporting cross-functional decision-making
+- **Simulation Capabilities:** What-if analysis and sensitivity testing (Wagner et al., 2014)
+
+## **Academic Perspectives**
+
+### **Operations Management View:**
+IBP is conceptualized as a "**planning integration mechanism**" that reduces organizational silos and improves demand-supply matching through structured coordination processes (Oliva & Watson, 2011).
+
+### **Strategic Management View:**
+IBP functions as a "**strategic capability**" enabling organizations to translate strategic intent into executable operational plans while maintaining adaptability to environmental changes (Goh & Eldridge, 2015).
+
+### **Information Systems View:**
+IBP represents a "**socio-technical system**" combining organizational processes, technological infrastructure, and human decision-making to achieve planning optimization (Jonsson & Mattsson, 2009).
+
+## **Theoretical Foundations**
+
+### **Systems Theory Perspective:**
+IBP embodies systems thinking by treating the organization as an interconnected network where:
+- Changes in one subsystem affect the entire system
+- Optimization requires holistic rather than local perspectives
+- Feedback loops enable continuous learning and adaptation
+
+### **Resource-Based View:**
+IBP constitutes a **dynamic capability** that:
+- Integrates and reconfigures organizational resources
+- Provides sustainable competitive advantage through superior planning coordination
+- Enables organizational learning and knowledge integration (Teece, 2007)
+
+### **Information Processing Theory:**
+IBP addresses organizational information processing requirements by:
+- Reducing uncertainty through improved information sharing
+- Enhancing decision-making quality through integrated data analysis
+- Facilitating coordination through structured communication processes (Galbraith, 1973)
+
+## **Operational Definition Components**
+
+### **Input Elements:**
+- Market intelligence and demand signals
+- Supply chain capabilities and constraints
+- Financial targets and resource availability
+- Strategic objectives and priorities
+- Risk factors and scenario assumptions
+
+### **Process Elements:**
+- Demand planning and portfolio management
+- Supply planning and capacity optimization
+- Financial planning and resource allocation
+- Risk assessment and mitigation planning
+- Performance review and plan reconciliation
+
+### **Output Elements:**
+- Integrated business plans with financial validation
+- Resource allocation decisions and investment priorities
+- Performance targets and accountability frameworks
+- Risk mitigation strategies and contingency plans
+- Organizational alignment and commitment
+
+## **Performance Dimensions**
+
+IBP effectiveness is typically measured across multiple dimensions:
+
+### **Planning Quality:**
+- Forecast accuracy and plan reliability
+- Cross-functional alignment and consistency
+- Scenario robustness and adaptability
+
+### **Financial Performance:**
+- Revenue optimization and cost management
+- Working capital efficiency
+- Return on invested capital improvement
+
+### **Operational Excellence:**
+- Service level achievement
+- Inventory optimization
+- Supply chain responsiveness
+
+### **Strategic Alignment:**
+- Goal congruence across functions
+- Strategic initiative execution
+- Market responsiveness and agility
+
+## **Contemporary Developments**
+
+Modern IBP implementations increasingly incorporate:
+- **Artificial Intelligence:** Machine learning for pattern recognition and predictive analytics
+- **Digital Twin Technology:** Virtual representation of physical supply chain for scenario testing
+- **Sustainability Integration:** Environmental and social considerations in planning decisions
+- **Agile Planning:** Shortened planning cycles and rapid plan adjustment capabilities
+
+## **Distinction from Related Concepts**
+
+| Concept | IBP | Traditional S&OP | Enterprise Planning |
+|---------|-----|------------------|-------------------|
+| **Scope** | Enterprise-wide, strategic-operational | Operations-focused | Strategic emphasis |
+| **Horizon** | 3-5 years | 18-24 months | 5+ years |
+| **Integration** | Full value chain | Internal functions | High-level alignment |
+| **Decision Focus** | Multi-objective optimization | Demand-supply balance | Strategic resource allocation |
+
+## **Research Implications**
+
+From an academic perspective, IBP presents rich research opportunities in:
+- **Optimization Theory:** Multi-objective decision-making under uncertainty
+- **Organizational Behavior:** Cross-functional coordination and change management
+- **Information Systems:** Technology-enabled planning and decision support
+- **Supply Chain Management:** End-to-end integration and collaboration
+
+IBP as a complex, multi-faceted organizational capability that requires interdisciplinary research approaches to fully understand and optimize its implementation and performance outcomes.
+
+---
+
+**References:**
+- Cecere, L., Hofman, D., & Preslan, L. (2009). *The rise of integrated business planning*. Supply Chain Insights.
+- Galbraith, J. R. (1973). *Designing complex organizations*. Addison-Wesley.
+- Goh, S. H., & Eldridge, S. (2015). New product introduction and supplier integration in sales and operations planning. *International Journal of Physical Distribution & Logistics Management*, 45(9/10), 861-886.
+- Grimson, J. A., & Pyke, D. F. (2007). Sales and operations planning: An exploratory study and framework. *The International Journal of Logistics Management*, 18(3), 322-346.
+- Jonsson, P., & Mattsson, S. A. (2009). Manufacturing planning and control for supply chain management. McGraw-Hill.
+- Oliver Wight. (2019). *Integrated business planning: The new S&OP*. John Wiley & Sons.
+- Oliva, R., & Watson, N. (2011). Cross‐functional alignment in supply chain planning. *International Journal of Operations & Production Management*, 31(6), 626-648.
+- Teece, D. J. (2007). Explicating dynamic capabilities. *Strategic Management Journal*, 28(13), 1319-1350.
+- Tuomikangas, N., & Kaipia, R. (2014). A coordination framework for sales and operations planning (S&OP). *Supply Chain Management*, 19(3), 287-299.
+- Wagner, S. M., Ullrich, K. K., & Transchel, S. (2014). The game plan for aligning the organization. *Business Horizons*, 57(2), 189-201.
 
 
