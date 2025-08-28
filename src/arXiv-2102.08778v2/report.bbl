@@ -1,0 +1,79 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+
+\bibitem{adams}
+Adams, J., Balas, E., Zawack, D.: The shifting bottleneck procedure for job
+  shop scheduling. Management Science  34(3),  391--401 (1988)
+
+\bibitem{apple}
+Applegate, D., Cook, W.: A computational study of the job-shop scheduling
+  problem. ORSA Journal on Computing  3(2),  149--156 (1991),
+  \url{http://dx.doi.org/10.1287/ijoc.3.2.149}
+
+\bibitem{baker2013}
+Baker, K.R., Trietsch, D.: Principles of sequencing and scheduling. John Wiley
+  \& Sons (2013)
+
+\bibitem{Blazewicz2007}
+Blazewicz, J., Ecker, K., Pesch, E., Schmidt, G., Weglarz, J.: Handbook on
+  Scheduling: Models and Methods for Advanced Planning (International Handbooks
+  on Information Systems). Springer-Verlag New York, Inc., Secaucus, NJ, USA
+  (2007)
+
+\bibitem{dacol2019iclp}
+Da~Col, G., Teppan, E.: Google vs ibm: A constraint solving challenge on the
+  job-shop scheduling problem. arXiv preprint arXiv:1909.08247  (2019)
+
+\bibitem{dacol2019cp}
+Da~Col, G., Teppan, E.C.: Industrial size job shop scheduling tackled by
+  present day cp solvers. In: International Conference on Principles and
+  Practice of Constraint Programming. pp. 144--160. Springer (2019)
+
+\bibitem{fuchigami2017}
+Fuchigami, H.Y., Rangel, S.: A survey of case studies in production scheduling:
+  Analysis and perspectives. Journal of Computational Science  25,  425--436
+  (2018)
+
+\bibitem{garey1976}
+Garey, M.R., Johnson, D.S., Sethi, R.: The complexity of flowshop and jobshop
+  scheduling. Mathematics of operations research  1(2),  117--129 (1976)
+
+\bibitem{laborie2018ibm}
+Laborie, P., Rogerie, J., Shaw, P., Vil{\'\i}m, P.: Ibm ilog cp optimizer for
+  scheduling. Constraints  23(2),  210--250 (2018)
+
+\bibitem{lawrence}
+Lawrence, S.: Resource constrained project scheduling: an experimental
+  investigation of heuristic scheduling techniques (Supplement). Graduate
+  School of Industrial Administration, Carnegie-Mellon University (1984)
+
+\bibitem{fisher}
+Muth, J., Thompson, G.: Industrial Scheduling. International series in
+  management, Prentice-Hall (1963)
+
+\bibitem{storer}
+Storer, R.H., Wu, S.D., Vaccari, R.: New search spaces for sequencing problems
+  with application to job shop scheduling. Management science  38(10),
+  1495--1509 (1992)
+
+\bibitem{taillard}
+Taillard, E.: Benchmarks for basic scheduling problems. European Journal of
+  Operational Research  64(2),  278 -- 285 (1993)
+
+\bibitem{teppan2018dispatching}
+Teppan, E.C.: Dispatching rules revisited-a large scale job shop scheduling
+  experiment. In: 2018 IEEE Symposium Series on Computational Intelligence
+  (SSCI). pp. 561--568. IEEE (2018)
+
+\bibitem{Teppan2020}
+Teppan, E.C., Da~Col, G.: Genetic Algorithms for Creating Large Job Shop
+  Dispatching Rules, pp. 121--140. Springer Singapore, Singapore (2020)
+
+\bibitem{zhai2014}
+Zhai, Y., Liu, C., Chu, W., Guo, R., Liu, C.: A decomposition heuristics based
+  on multi-bottleneck machines for large-scale job shop scheduling problems.
+  Journal of Industrial Engineering and Management (JIEM)  7(5),  1397--1414
+  (2014)
+
+\end{thebibliography}

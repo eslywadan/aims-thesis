@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBP Optimization Model - Enhanced Performance Suite</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        /* Copy all your existing styles from the original index.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            overflow: hidden;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            font-weight: 300;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.2em;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Enhanced Controls Section */
+        .controls {
+            padding: 25px 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #6c5ce7;
+        }
+
+        .btn-enhanced {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn:disabled:hover {
+            box-shadow: none;
+        }
+
+        /* Enhanced Progress Modal */
+        .progress-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            backdrop-filter: blur(5px);
+        }
+
+        .progress-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            min-width: 400px;
+            max-width: 500px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            margin: 15px 0;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Copy all other styles from your original index.html */
+        .results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e9ecef;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .card h3 {
+            margin: 0 0 20px 0;
+            color: #2c3e50;
+            font-size: 1.4em;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .card h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .metric {
+            text-align: center;
+            padding: 20px 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .metric:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 0.85em;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 320px;
+            margin-top: 20px;
+        }
+        
+        .log {
+            height: 400px;
+            overflow-y: auto;
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .log::before {
+            content: 'Enhanced System Log';
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            color: #666;
+            font-size: 0.8em;
+        }
+        
+        .log-entry {
+            margin-bottom: 5px;
+            padding-left: 10px;
+            border-left: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .log-entry:hover {
+            border-left-color: #00ff00;
+            background: rgba(0, 255, 0, 0.05);
+        }
+        
+        .log-timestamp {
+            color: #888;
+        }
+        
+        .log-info {
+            color: #00ff00;
+        }
+        
+        .log-warning {
+            color: #ffaa00;
+        }
+        
+        .log-error {
+            color: #ff4444;
+        }
+
+        .log-success {
+            color: #00ffaa;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+        }
+
+        .loading-text {
+            font-size: 1.2em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .status-success { background-color: #28a745; }
+        .status-warning { background-color: #ffc107; }
+        .status-error { background-color: #dc3545; }
+        .status-info { background-color: #17a2b8; }
+
+        .performance-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .performance-metric {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, rgba(102, 126, 234, 0.1) 100%);
+            border-radius: 8px;
+            color: white;
+        }
+
+        .performance-metric .value {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .performance-metric .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>IBP Optimization Model</h1>
+            <p>Enhanced Multi-Objective Optimization with Performance Acceleration</p>
+        </div>
+        
+        <div class="controls">
+            <!-- Enhanced Controls -->
+            <button class="btn btn-enhanced" onclick="initializeEnhancedModel()">🚀 Initialize Enhanced Model</button>
+            <button class="btn btn-success" onclick="runEnhancedBasicTest()" id="enhancedTestBtn" disabled>⚡ Enhanced Test</button>
+            <button class="btn btn-warning" onclick="runPerformanceBenchmark()" id="benchmarkBtn" disabled>🏃 Performance Benchmark</button>
+            
+            <!-- Original Controls (for backward compatibility) -->
+            <button class="btn btn-primary" onclick="initializeModel()">🔧 Standard Model</button>
+            <button class="btn btn-secondary" onclick="loadSampleData()" id="loadDataBtn">📊 Load Sample Data</button>
+            <button class="btn btn-success" onclick="runScenarioTest()" id="scenarioBtn" disabled>🎯 Run Scenario</button>
+            <button class="btn btn-secondary" onclick="runBasicTest()" id="basicTestBtn" disabled>🔬 Basic Test</button>
+            <button class="btn btn-success" onclick="runAdvancedTest()" id="advancedTestBtn" disabled>⚡ Advanced Test</button>
+            <button class="btn btn-warning" onclick="runScenarioAnalysis()" id="scenarioTestBtn" disabled>📈 Scenario Analysis</button>
+            <button class="btn btn-primary" onclick="runPerformanceTest()" id="performanceTestBtn" disabled>🏃 Performance Test</button>
+            <button class="btn btn-secondary" onclick="clearResults()">🧹 Clear Results</button>
+            
+            <select id="scenarioSelect" style="margin-left: 10px; padding: 8px; border-radius: 4px; border: 1px solid #ccc;" disabled>
+                <option value="">Select Scenario...</option>
+            </select>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div class="loading-text">Running enhanced optimization tests...</div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+        
+        <div class="results" id="results">
+            <div class="card">
+                <h3>🎛️ Enhanced Model Status</h3>
+                <div id="modelStatus">
+                    <p><span class="status-indicator status-warning"></span>Click "🚀 Initialize Enhanced Model" to start</p>
+                </div>
+                <div class="performance-metrics" id="performanceMetrics" style="display: none;">
+                    <div class="performance-metric">
+                        <div class="value" id="avgTime">-</div>
+                        <div class="label">Avg Time (ms)</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div class="value" id="throughput">-</div>
+                        <div class="label">Ops/sec</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div class="value" id="cacheHitRate">-</div>
+                        <div class="label">Cache Hit %</div>
+                    </div>
+                    <div class="performance-metric">
+                        <div class="value" id="workerStatus">-</div>
+                        <div class="label">Worker Status</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>📋 Enhanced System Log</h3>
+                <div class="log" id="testLog">
+                    <div class="log-entry">
+                        <span class="log-timestamp">[Ready]</span> 
+                        <span class="log-info">Enhanced IBP System ready for testing...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card full-width">
+                <h3>🎯 Objective Metrics</h3>
+                <div class="metrics-grid" id="objectiveMetrics">
+                    <div class="metric">
+                        <span class="metric-value" id="costMetric">-</span>
+                        <div class="metric-label">Total Cost</div>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value" id="serviceMetric">-</span>
+                        <div class="metric-label">Service Level</div>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value" id="turnsMetric">-</span>
+                        <div class="metric-label">Inventory Turns</div>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value" id="sustainabilityMetric">-</span>
+                        <div class="metric-label">Sustainability</div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="objectivesChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>📊 Demand Forecast</h3>
+                <div class="chart-container">
+                    <canvas id="demandChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>🔧 Solution Analysis</h3>
+                <div class="chart-container">
+                    <canvas id="solutionChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load JavaScript modules in CORRECT ORDER -->
+    
+    <!-- Performance Enhancement Modules (Load FIRST) -->
+    <script src="js/utils/performance-monitor.js"></script>
+    <script src="js/utils/cache-manager.js"></script>
+    <script src="js/utils/progress-manager.js"></script>
+    <script src="js/core/worker-manager.js"></script>
+    
+    <!-- Original IBP Core Modules -->
+    <script src="js/ibp-model.js"></script>
+    <script src="js/data-loader.js"></script>
+    <script src="js/test-suite.js"></script>
+    
+    <!-- Enhanced IBP Module (Load LAST) -->
+    <script src="js/core/ibp-model-enhanced.js"></script>
+    
+    <script>
+        // Initialize data loader
+        const dataLoader = new IBPDataLoader();
+        
+        // Enhanced initialization function
+        async function initializeEnhancedModel() {
+            if (window.ibpTestSuite && window.ibpTestSuite.isRunning) {
+                window.log('⚠️ Another operation is running, please wait...', 'warning');
+                return;
+            }
+
+            try {
+                window.ibpTestSuite.isRunning = true;
+                window.log('🚀 Initializing Enhanced IBP Model...', 'info');
+                showLoading(true);
+                
+                // Check if enhanced classes are available
+                if (typeof IBPModelFactoryEnhanced === 'undefined') {
+                    throw new Error('Enhanced model not loaded. Please check script loading order.');
+                }
+                
+                // Create enhanced model
+                const enhancedModel = IBPModelFactoryEnhanced.createManufacturingModelEnhanced({
+                    horizonMonths: 18,
+                    numScenarios: 500
+                });
+                
+                // Initialize worker support
+                const workerSupport = await enhancedModel.initialize();
+                
+                // Create progress tracker for initialization
+                const progressTracker = window.progressManager.createTracker('initialization', {
+                    total: 100,
+                    message: 'Initializing enhanced model...'
+                });
+                
+                // Update UI with progress
+                progressTracker.onProgress = (progress) => {
+                    window.log(`📊 Initialization: ${progress.percentage.toFixed(1)}% - ${progress.message}`, 'info');
+                };
+                
+                // Generate scenarios with progress tracking
+                progressTracker.setMessage('Generating demand scenarios...');
+                await enhancedModel.generateDemandScenariosAsync((scenarioProgress) => {
+                    const overallProgress = 50 + (scenarioProgress.progress * 50); // 50-100% for scenarios
+                    progressTracker.setProgress(overallProgress);
+                    progressTracker.setMessage(`Scenarios: ${scenarioProgress.completed}/${scenarioProgress.total}`);
+                });
+                
+                // Complete initialization
+                progressTracker.complete();
+                window.progressManager.removeTracker('initialization');
+                
+                // Replace the global model
+                window.ibpModel = enhancedModel;
+                if (window.ibpTestSuite) {
+                    window.ibpTestSuite.ibpModel = enhancedModel;
+                }
+                
+                // Update status display
+                const statusElement = document.getElementById('modelStatus');
+                if (statusElement) {
+                    const stats = enhancedModel.getPerformanceStats();
+                    statusElement.innerHTML = `
+                        <p><span class="status-indicator status-success"></span>Enhanced Model Ready</p>
+                        <p><strong>Worker Support:</strong> ${stats.worker.supported ? '✅ Enabled' : '❌ Disabled'}</p>
+                        <p><strong>Cache:</strong> ${stats.cache.maxSize} items, ${stats.cache.memoryUsage}KB</p>
+                        <p><strong>Performance:</strong> Async processing, Progress tracking</p>
+                        <p><strong>Scenarios:</strong> ${stats.model.numScenarios} generated</p>
+                    `;
+                }
+                
+                // Enable enhanced buttons
+                const enhancedBtn = document.getElementById('enhancedTestBtn');
+                const benchmarkBtn = document.getElementById('benchmarkBtn');
+                if (enhancedBtn) enhancedBtn.disabled = false;
+                if (benchmarkBtn) benchmarkBtn.disabled = false;
+                
+                // Update performance metrics display
+                updatePerformanceDisplay(enhancedModel.getPerformanceStats());
+                
+                window.log('✅ Enhanced model initialization completed successfully!', 'success');
+                window.log(`🎯 Features: ${Object.keys(enhancedModel.enhancedFeatures).join(', ')}`, 'info');
+                
+                updateButtons(true);
+                showLoading(false);
+                
+                // Create initial visualizations
+                if (window.ibpTestSuite && window.ibpTestSuite.createDemandChart) {
+                    window.ibpTestSuite.createDemandChart();
+                }
+                
+            } catch (error) {
+                window.log('❌ Enhanced model initialization failed: ' + error.message, 'error');
+                console.error('Detailed error:', error);
+                showLoading(false);
+                
+                // Fallback to original model
+                window.log('🔄 Falling back to original model...', 'warning');
+                if (typeof initializeModel === 'function') {
+                    initializeModel();
+                }
+            } finally {
+                if (window.ibpTestSuite) {
+                    window.ibpTestSuite.isRunning = false;
+                }
+            }
+        }
+
+        // Enhanced test function
+        async function runEnhancedBasicTest() {
+            if (!window.ibpModel || !window.ibpModel.enhancedFeatures) {
+                window.log('⚠️ Please initialize the enhanced model first', 'warning');
+                return;
+            }
+
+            if (window.ibpTestSuite && window.ibpTestSuite.isRunning) {
+                window.log('⚠️ Another operation is running, please wait...', 'warning');
+                return;
+            }
+
+            try {
+                window.ibpTestSuite.isRunning = true;
+                window.log('⚡ Running enhanced basic test...', 'info');
+                showLoading(true);
+                
+                // Generate solution
+                const solution = window.ibpModel.generateRandomSolution();
+                window.log('📋 Generated optimized solution', 'info');
+                
+                // Create progress tracker for evaluation
+                const progressTracker = window.progressManager.createTracker('evaluation', {
+                    total: 4,
+                    message: 'Evaluating objectives...'
+                });
+                
+                progressTracker.onProgress = (progress) => {
+                    window.log(`📊 Evaluation: ${progress.percentage.toFixed(1)}% - ${progress.message}`, 'info');
+                };
+                
+                // Use enhanced evaluation with progress tracking
+                const objectives = await window.ibpModel.evaluateObjectivesEnhanced(
+                    solution,
+                    (evalProgress) => {
+                        progressTracker.setProgress(evalProgress.current);
+                        progressTracker.setMessage(evalProgress.message);
+                    }
+                );
+                
+                progressTracker.complete();
+                window.progressManager.removeTracker('evaluation');
+                
+                // Update UI with results
+                if (window.ibpTestSuite) {
+                    window.ibpTestSuite.updateObjectiveMetrics(objectives);
+                    window.ibpTestSuite.createObjectivesChart(objectives);
+                    window.ibpTestSuite.createSolutionChart(solution);
+                }
+                
+                // Show performance statistics
+                const stats = window.ibpModel.getPerformanceStats();
+                updatePerformanceDisplay(stats);
+                
+                window.log('📈 Performance Statistics:', 'success');
+                window.log(`   Cache Hit Rate: ${stats.cache.hitRate.toFixed(1)}%`, 'info');
+                window.log(`   Memory Usage: ${stats.cache.memoryUsage}KB`, 'info');
+                
+                if (stats.performance.evaluateObjectives) {
+                    window.log(`   Avg Evaluation Time: ${stats.performance.evaluateObjectives.avgTime.toFixed(2)}ms`, 'info');
+                }
+                
+                window.log('✅ Enhanced basic test completed successfully!', 'success');
+                showLoading(false);
+                
+            } catch (error) {
+                window.log('❌ Enhanced test failed: ' + error.message, 'error');
+                console.error('Detailed error:', error);
+                showLoading(false);
+            } finally {
+                if (window.ibpTestSuite) {
+                    window.ibpTestSuite.isRunning = false;
+                }
+            }
+        }
+
+        // Performance benchmark function
+        async function runPerformanceBenchmark() {
+            if (!window.ibpModel || !window.ibpModel.enhancedFeatures) {
+                window.log('⚠️ Please initialize the enhanced model first', 'warning');
+                return;
+            }
+
+            try {
+                window.log('🏃 Starting performance benchmark...', 'info');
+                showLoading(true);
+                
+                const numTests = 20;
+                const progressTracker = window.progressManager.createTracker('benchmark', {
+                    total: numTests,
+                    message: 'Running performance tests...'
+                });
+                
+                const results = [];
+                
+                for (let i = 0; i < numTests; i++) {
+                    const startTime = performance.now();
+                    
+                    const solution = window.ibpModel.generateRandomSolution();
+                    await window.ibpModel.evaluateObjectivesEnhanced(solution);
+                    
+                    const endTime = performance.now();
+                    const duration = endTime - startTime;
+                    results.push(duration);
+                    
+                    progressTracker.increment();
+                    progressTracker.setMessage(`Test ${i + 1}/${numTests} completed`);
+                    
+                    // Small delay to prevent UI blocking
+                    await new Promise(resolve => setTimeout(resolve, 10));
+                }
+                
+                progressTracker.complete();
+                window.progressManager.removeTracker('benchmark');
+                
+                // Calculate statistics
+                const avgTime = results.reduce((a, b) => a + b, 0) / results.length;
+                const minTime = Math.min(...results);
+                const maxTime = Math.max(...results);
+                const throughput = 1000 / avgTime; // operations per second
+                
+                // Display results
+                window.log('🏁 Performance Benchmark Results:', 'success');
+                window.log(`   Average Time: ${avgTime.toFixed(2)}ms`, 'info');
+                window.log(`   Min Time: ${minTime.toFixed(2)}ms`, 'info');
+                window.log(`   Max Time: ${maxTime.toFixed(2)}ms`, 'info');
+                window.log(`   Throughput: ${throughput.toFixed(2)} ops/sec`, 'info');
+                
+                // Show final performance stats
+                const stats = window.ibpModel.getPerformanceStats();
+                updatePerformanceDisplay(stats);
+                
+                window.log(`   Final Cache Hit Rate: ${stats.cache.hitRate.toFixed(1)}%`, 'info');
+                window.log(`   Cache Size: ${stats.cache.size}/${stats.cache.maxSize}`, 'info');
+                
+                showLoading(false);
+                
+            } catch (error) {
+                window.log('❌ Performance benchmark failed: ' + error.message, 'error');
+                showLoading(false);
+            }
+        }
+
+        // Update performance metrics display
+        function updatePerformanceDisplay(stats) {
+            const metricsElement = document.getElementById('performanceMetrics');
+            if (metricsElement) {
+                metricsElement.style.display = 'grid';
+                
+                // Update individual metrics
+                const avgTimeElement = document.getElementById('avgTime');
+                const throughputElement = document.getElementById('throughput');
+                const cacheHitRateElement = document.getElementById('cacheHitRate');
+                const workerStatusElement = document.getElementById('workerStatus');
+                
+                if (avgTimeElement && stats.performance.evaluateObjectives) {
+                    avgTimeElement.textContent = stats.performance.evaluateObjectives.avgTime.toFixed(1);
+                }
+                
+                if (throughputElement && stats.performance.evaluateObjectives) {
+                    const throughput = 1000 / stats.performance.evaluateObjectives.avgTime;
+                    throughputElement.textContent = throughput.toFixed(1);
+                }
+                
+                if (cacheHitRateElement) {
+                    cacheHitRateElement.textContent = stats.cache.hitRate.toFixed(1);
+                }
+                
+                if (workerStatusElement) {
+                    workerStatusElement.textContent = stats.worker.supported ? 'Active' : 'Disabled';
+                }
+            }
+        }
+
+        // Enhanced functions with data integration (from original code)
+        async function loadSampleData() {
+            if (!window.ibpTestSuite.getModel()) {
+                window.log('⚠️ Please initialize the model first', 'warning');
+                return;
+            }
+            
+            try {
+                window.log('📊 Loading sample demand data...', 'info');
+                
+                // Load data first
+                await dataLoader.loadAllData();
+                window.log('✅ Data files loaded successfully', 'success');
+                
+                // Apply data to model
+                const model = window.ibpTestSuite.getModel();
+                dataLoader.applySampleDemandData(model);
+                window.log('✅ Sample data applied to model', 'success');
+                
+                // Now get scenarios (after data is loaded)
+                const scenarios = dataLoader.getAvailableScenarios();
+                const select = document.getElementById('scenarioSelect');
+                select.innerHTML = '<option value="">Select Scenario...</option>';
+                
+                scenarios.forEach(scenario => {
+                    const option = document.createElement('option');
+                    option.value = scenario.id;
+                    option.textContent = `${scenario.name} (${scenario.complexity})`;
+                    select.appendChild(option);
+                });
+                
+                select.disabled = false;
+                document.getElementById('scenarioBtn').disabled = false;
+                
+                // Recreate demand chart with new data
+                if (window.ibpTestSuite && window.ibpTestSuite.createDemandChart) {
+                    window.ibpTestSuite.createDemandChart();
+                }
+                
+                window.log(`✅ Loaded ${scenarios.length} test scenarios`, 'success');
+                window.log(`📈 Updated ${model.config.horizonMonths} months of demand forecast`, 'info');
+                
+            } catch (error) {
+                window.log('❌ Error loading sample data: ' + error.message, 'error');
+                console.error('Detailed error:', error);
+            }
+        }
+        
+        async function runScenarioTest() {
+            const scenarioId = document.getElementById('scenarioSelect').value;
+            if (!scenarioId) {
+                window.log('⚠️ Please select a scenario first', 'warning');
+                return;
+            }
+            
+            try {
+                window.log(`🎯 Running scenario test: ${scenarioId}`, 'info');
+                const result = await dataLoader.runScenarioTest(scenarioId, window.ibpTestSuite);
+                
+                // Update UI with scenario results
+                if (window.ibpTestSuite) {
+                    window.ibpTestSuite.updateObjectiveMetrics(result.objectives);
+                    window.ibpTestSuite.createObjectivesChart(result.objectives);
+                    window.ibpTestSuite.createSolutionChart(result.solution);
+                }
+                
+                // Log validation results
+                if (result.validation.passed) {
+                    window.log('✅ Scenario validation PASSED', 'success');
+                } else {
+                    window.log('❌ Scenario validation FAILED', 'error');
+                    result.validation.details.forEach(detail => {
+                        const status = detail.status === 'PASS' ? '✅' : '❌';
+                        window.log(`${status} ${detail.metric}: ${detail.actual} (expected: ${detail.expected})`, 
+                                 detail.status === 'PASS' ? 'success' : 'warning');
+                    });
+                }
+                
+                window.log(`📊 Final Results:`, 'info');
+                window.log(`   Service Level: ${(result.performance.service_level * 100).toFixed(1)}%`, 'info');
+                window.log(`   Total Cost: ${result.performance.total_cost.toFixed(0)}`, 'info');
+                window.log(`   Inventory Turns: ${result.performance.inventory_turns.toFixed(1)}`, 'info');
+                window.log(`   Sustainability: ${(result.performance.sustainability * 100).toFixed(1)}%`, 'info');
+                
+            } catch (error) {
+                window.log('❌ Error running scenario test: ' + error.message, 'error');
+            }
+        }
+
+        // Keep all original functions for backward compatibility
+        // (Copy the remaining functions from your original index.html)
+        
+        // Utility functions (keep these from original)
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logDiv = document.getElementById('testLog');
+            
+            if (logDiv) {
+                const entry = document.createElement('div');
+                entry.className = 'log-entry';
+                entry.innerHTML = `<span class="log-timestamp">[${timestamp}]</span> <span class="log-${type}">${message}</span>`;
+                logDiv.appendChild(entry);
+                logDiv.scrollTop = logDiv.scrollHeight;
+            }
+            
+            console.log(`[${timestamp}] ${type.toUpperCase()}: ${message}`);
+        }
+
+        function showLoading(show = true) {
+            const loadingElement = document.getElementById('loading');
+            const resultsElement = document.getElementById('results');
+            
+            if (loadingElement) loadingElement.style.display = show ? 'block' : 'none';
+            if (resultsElement) resultsElement.style.display = show ? 'none' : 'grid';
+        }
+
+        function updateButtons(enabled = true) {
+            const buttons = ['basicTestBtn', 'advancedTestBtn', 'scenarioTestBtn', 'performanceTestBtn'];
+            buttons.forEach(id => {
+                const button = document.getElementById(id);
+                if (button) button.disabled = !enabled;
+            });
+        }
+
+        function clearResults() {
+            const logElement = document.getElementById('testLog');
+            if (logElement) {
+                logElement.innerHTML = 
+                    '<div class="log-entry"><span class="log-timestamp">[Cleared]</span> <span class="log-info">🧹 Enhanced system cleared - Ready for new tests</span></div>';
+            }
+            
+            // Clear metrics
+            ['costMetric', 'serviceMetric', 'turnsMetric', 'sustainabilityMetric'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.textContent = '-';
+            });
+            
+            // Hide performance metrics
+            const metricsElement = document.getElementById('performanceMetrics');
+            if (metricsElement) metricsElement.style.display = 'none';
+            
+            // Clear charts (if ibpTestSuite exists)
+            if (window.ibpTestSuite && window.ibpTestSuite.charts) {
+                Object.values(window.ibpTestSuite.charts).forEach(chart => {
+                    try {
+                        chart.destroy();
+                    } catch (e) {
+                        console.warn('Error destroying chart:', e);
+                    }
+                });
+                window.ibpTestSuite.charts = {};
+            }
+            
+            window.log('🧹 Enhanced system cleared successfully', 'info');
+        }
+
+        // Global assignments
+        window.log = log;
+        window.initializeEnhancedModel = initializeEnhancedModel;
+        window.runEnhancedBasicTest = runEnhancedBasicTest;
+        window.runPerformanceBenchmark = runPerformanceBenchmark;
+        window.loadSampleData = loadSampleData;
+        window.runScenarioTest = runScenarioTest;
+        window.clearResults = clearResults;
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            log('🚀 Enhanced IBP Test Suite loaded successfully', 'success');
+            log('💡 Click "🚀 Initialize Enhanced Model" for accelerated performance', 'info');
+            log('🔧 Or use "🔧 Standard Model" for original functionality', 'info');
+        });
+    </script>
+</body>
+</html>

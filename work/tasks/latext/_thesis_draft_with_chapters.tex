@@ -1,0 +1,69 @@
+
+\documentclass[12pt,a4paper]{report}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath, amssymb}
+\usepackage{lipsum}
+
+% Page setup
+\geometry{margin=1in}
+\onehalfspacing
+
+% Title Page
+\title{Thesis Draft}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\pagenumbering{roman}
+
+% Abstract
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\lipsum[1] % Replace with your abstract
+
+% Acknowledgements
+\chapter*{Acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+\lipsum[2] % Replace with your acknowledgements
+
+\tableofcontents
+\newpage
+
+\pagenumbering{arabic}
+
+% Chapters
+\chapter{Introduction}
+\lipsum[3] % Replace with Introduction content
+
+\chapter{Literature Review}
+\lipsum[4] % Replace with Literature Review content
+
+\chapter{Research Methodology}
+\lipsum[5] % Replace with Methodology content
+
+\chapter{Results and Discussion}
+\input{_thesis_draft_content.tex}
+
+\chapter{Conclusion and Future Work}
+\lipsum[6] % Replace with Conclusion content
+
+% References
+\chapter*{References}
+\addcontentsline{toc}{chapter}{References}
+\bibliographystyle{plain}
+% If using BibTeX, include a .bib file:
+% \bibliography{references}
+% Otherwise, you can write references manually:
+\begin{thebibliography}{9}
+\bibitem{example1} Author, \emph{Title}, Journal, Year.
+\end{thebibliography}
+
+\end{document}

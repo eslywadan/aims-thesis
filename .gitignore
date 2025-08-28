@@ -1,0 +1,17 @@
+venv
+venv/*
+.venv
+venv/
+.venv/
+.DS_Store
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.egg
+*.egg-info/
+*.whl
+*.dist-info/
+*.coverage
+.coverage.*
