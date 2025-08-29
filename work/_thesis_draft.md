@@ -63,3 +63,5 @@ This research is expected to make contributions in three major dimensions:
 
 ---
 
+Must be able to answer 
+(1) How to balance multipe objectives and ensure achieving pareto frontiers 
